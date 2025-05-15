@@ -1,8 +1,13 @@
 import React from 'react'
+import WelcomeBanner from "@/app/workspace/_components/WelcomeBanner";
+import CourseList from "@/app/workspace/_components/CourseList";
 
 function Workspace() {
   return (
-    <div>Workspace</div>
+    <div>
+      <WelcomeBanner />
+      <CourseList/>
+    </div>
   )
 }
 
