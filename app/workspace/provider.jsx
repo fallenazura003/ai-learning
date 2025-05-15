@@ -1,14 +1,16 @@
 import React from 'react'
 import {SidebarProvider, SidebarTrigger} from '@/components/ui/sidebar'
 import AppSidebar from "@/app/workspace/_components/AppSidebar";
+import AppHeader from "@/app/workspace/_components/AppHeader";
 
 function WorkspaceProvider({children}) {
     return (
 
         <SidebarProvider>
-            <SidebarTrigger/>
             <AppSidebar/>
-            <div>{children}</div>
+            <div className={"w-full"}>
+            <AppHeader/>
+            {children}</div>
         </SidebarProvider>
     )
 }
