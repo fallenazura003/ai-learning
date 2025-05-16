@@ -55,7 +55,7 @@ function AppSidebar() {
             <SidebarContent>
                 <SidebarGroup/>
                 <AddNewCourseDialog>
-                <Button>Tạo khóa học mới</Button>
+                <Button className={"w-full"}>Tạo khóa học mới</Button>
                 </AddNewCourseDialog>
                 <SidebarGroup/>
                 <SidebarGroup>
