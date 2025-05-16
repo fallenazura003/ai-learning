@@ -50,6 +50,7 @@ function AddNewCourseDialog({children}) {
             const result=await axios.post("/api/generate-course-layout",{formData,courseId:courseId});
             console.log(result.data);
             setLoading(false);
+            router.push("/workspace/edit-course/"+result.data?.courseId);
         } catch (e){
             setLoading(false);
             console.log(e);
