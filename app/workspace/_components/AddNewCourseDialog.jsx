@@ -20,16 +20,21 @@ import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
 import {Switch} from "@/components/ui/switch";
 import {Button} from "@/components/ui/button";
-import {Sparkle} from "lucide-react";
+import {Loader2Icon, Sparkle} from "lucide-react";
+import axios from "axios";
+import {v4 as uuidv4} from "uuid";
 
 
 function AddNewCourseDialog({children}) {
+
+    const [loading, setLoading] = useState(false);
 
     const [formData, setFormData] = useState({
         name: "",
         description: "",
         noOfChapter:1,
         category: "",
+        includeVideo: false,
         level:""
     });
 
@@ -37,8 +42,19 @@ function AddNewCourseDialog({children}) {
         setFormData(prev => ({...prev, [field]: value}))
     }
 
-    const onGenerate = ()=>{
+    const onGenerate =async ()=>{
         console.log(formData);
+        const courseId = uuidv4();
+        try {
+            setLoading(true);
+            const result=await axios.post("/api/generate-course-layout",{formData,courseId:courseId});
+            console.log(result.data);
+            setLoading(false);
+        } catch (e){
+            setLoading(false);
+            console.log(e);
+        }
+
     }
 
     return (
@@ -60,12 +76,12 @@ function AddNewCourseDialog({children}) {
                                 </div>
                                 <div>
                                     <label>Số bài học</label>
-                                    <Input placeholder={"Ví dụ: 5" } type="number" onChange={(event)=>onHandleInputChange("noOfchapter",event?.target.value)}/>
+                                    <Input placeholder={"Ví dụ: 5" } type="number" onChange={(event)=>onHandleInputChange("noOfChapter",event?.target.value)}/>
                                 </div>
                                 <div className={"flex gap-3 items-center"}>
                                     <label>Kèm Video</label>
                                     <Switch
-                                    onCheckChange={() =>onHandleInputChange("includeVideo",!formData?.includeVideo)}/>
+                                    onCheckedChange={() =>onHandleInputChange("includeVideo",!formData?.includeVideo)}/>
                                 </div>
                                 <div>
                                     <label>Độ khó</label>
@@ -87,7 +103,8 @@ function AddNewCourseDialog({children}) {
                                 </div>
 
                                 <div className={"mt-5"}>
-                                    <Button className={"w-full"} onClick={onGenerate(formData)}><Sparkle/> Tạo khóa học</Button>
+                                    <Button className={"w-full"} onClick={onGenerate} disabled={loading}>
+                                        {loading? <Loader2Icon className={"animate-spin"}/>:<Sparkle/> } Tạo khóa học</Button>
                                 </div>
                             </div>
                         </DialogDescription>
