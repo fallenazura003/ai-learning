@@ -2,6 +2,7 @@
 import React from 'react';
 import Image from "next/image";
 import {Button} from "@/components/ui/button";
+import AddNewCourseDialog from "@/app/workspace/_components/AddNewCourseDialog";
 
 function CourseList() {
 
@@ -13,7 +14,9 @@ function CourseList() {
             {courseList?.length == 0?<div className={"flex justify-center items-center p-7 flex-col border rounded-md mt-2 bg-secondary"}>
                 <Image src={"/certificate.jpg"} alt={"logo"} width={80 } height={80 } />
                 <h2 className={"text-xl font-bold my-2"}>Bạn chưa có khóa học nào</h2>
+                <AddNewCourseDialog>
                 <Button>+Tạo khóa học mới</Button>
+                </AddNewCourseDialog>
             </div>:
             <div>
                 Danh sách khóa học
