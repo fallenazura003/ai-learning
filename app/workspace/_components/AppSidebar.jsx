@@ -12,6 +12,7 @@ import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import {Book, Compass, LayoutDashboard, PencilRulerIcon, UserCircle2Icon, WalletCards} from "lucide-react";
 import {usePathname} from "next/navigation";
+import AddNewCourseDialog from "@/app/workspace/_components/AddNewCourseDialog";
 
 const SidebarOptions = [{
     title: "Bảng điều khiển",
@@ -53,7 +54,9 @@ function AppSidebar() {
             <Image src={'/logo.svg'} alt="logo" width={40} height={40}/>
             <SidebarContent>
                 <SidebarGroup/>
+                <AddNewCourseDialog>
                 <Button>Tạo khóa học mới</Button>
+                </AddNewCourseDialog>
                 <SidebarGroup/>
                 <SidebarGroup>
                     <SidebarGroupContent>
