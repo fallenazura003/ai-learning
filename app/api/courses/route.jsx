@@ -9,6 +9,6 @@ export async function GET(req){
 
     const result=await db.select().from(coursesTable)
         .where(eq(coursesTable.cid,courseId))
-
-    return NextResponse.json()
+    console.log(result)
+    return NextResponse.json(result[0]);
 }
