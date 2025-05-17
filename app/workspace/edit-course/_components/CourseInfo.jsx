@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
-import { Settings } from "lucide-react";
+"use client"
+import React, {useState} from 'react';
+import {Settings} from "lucide-react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import {Button} from "@/components/ui/button";
+import {Progress} from "@/components/ui/progress";
 import axios from "axios";
+import {useRouter} from "next/navigation";
+import {toast} from "sonner";
 
-function CourseInfo({ course }) {
+function CourseInfo({course}) {
     console.log(course);
     const courseLayout = course?.courseJson?.course;
     const [loading, setLoading] = useState(false);
+
+    const router = useRouter();
 
     const GenerateCourseContent = async () => {
         setLoading(true); // Set loading to true when the API call starts
@@ -20,9 +25,12 @@ function CourseInfo({ course }) {
             });
             console.log(result.data);
             setLoading(false); // Set loading to false when the API call is successful
+            router.replace('/workspace')
+            toast.success('Đã tạo khóa học')
         } catch (e) {
             console.error(e);
             setLoading(false); // Set loading to false if there's an error
+            toast.error('Hãy thử lại!');
         }
     };
 
@@ -60,9 +68,9 @@ function CourseInfo({ course }) {
                     className={'max-w-sm'}
                     disabled={loading} // Disable the button while loading
                 >
-                    <Settings className="mr-2" />
+                    <Settings className="mr-2"/>
                     Tạo nội dung
-                    {loading && <Progress className="ml-2 w-6 h-1" />} {/* Show progress bar when loading */}
+                    {loading && <Progress className="ml-2 w-6 h-1"/>} {/* Show progress bar when loading */}
                 </Button>
 
                 {loading && (
