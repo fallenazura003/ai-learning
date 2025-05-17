@@ -1,5 +1,9 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
+import axios from "axios";
+import {coursesTable} from "@/config/schema";
+import {db} from "@/config/db";
+import {eq} from "drizzle-orm";
 
 const PROMPT = `Dựa vào tên chương và danh sách Chủ đề, hãy tạo nội dung chi tiết định dạng HTML hợp lệ cho từng chủ đề. Trả về kết quả dưới dạng JSON tiếng Việt theo cấu trúc sau:
 
@@ -27,6 +31,31 @@ const sanitizeHTML = (html) => {
     return html.replace(/[\x00-\x1F\x7F-\x9F]/g, ' '); // Replace bad control characters with space
 };
 
+const YOUTUBE_BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
+const GetYoutubeVideo = async (topic) => {
+    const params = {
+        parts: 'snippet',
+        q:topic,
+        maxResults: 1, // Reduced to 1 for simplicity in this example
+        type: 'video',
+        key: process.env.YOUTUBE_API_KEY
+    };
+    try {
+        const resp = await axios.get(YOUTUBE_BASE_URL, { params: params });
+        const youtubeVideoListResp = resp.data.items;
+        if (youtubeVideoListResp && youtubeVideoListResp.length > 0) {
+            return {
+                videoId: youtubeVideoListResp[0].id?.videoId,
+                title: youtubeVideoListResp[0]?.snippet?.title,
+            };
+        }
+        return null;
+    } catch (error) {
+        console.error("Error fetching YouTube video for topic:", topic, error);
+        return null;
+    }
+};
+
 export async function POST(req) {
     const { courseJson, courseTitle, courseId } = await req.json();
 
@@ -45,6 +74,7 @@ export async function POST(req) {
                 ],
             },
         ];
+        let aiContent = { chapterName: chapter.chapterName, topics: [] };
         try {
             const response = await ai.models.generateContent({
                 model,
@@ -56,29 +86,40 @@ export async function POST(req) {
                 const RawJson = RawResp.replace('```json', '').replace('```', '');
                 try {
                     const parsedJSON = JSON.parse(RawJson);
-                    parsedJSON.topics = parsedJSON.topics.map(topic => ({
-                        ...topic,
-                        content: sanitizeHTML(topic.content)
-                    }));
-                    return parsedJSON;
+                    aiContent = {
+                        chapterName: parsedJSON.chapterName,
+                        topics: parsedJSON.topics.map(topic => ({
+                            ...topic,
+                            content: sanitizeHTML(topic.content)
+                        }))
+                    };
                 } catch (parseError) {
                     console.error("Lỗi khi parse JSON từ AI:", RawJson, parseError);
-                    return { chapterName: chapter.chapterName, topics: [] };
                 }
             } else {
                 console.warn("Không nhận được phản hồi nội dung từ AI cho chương:", chapter.chapterName);
-                return { chapterName: chapter.chapterName, topics: [] };
             }
         } catch (error) {
             console.error("Lỗi khi gọi Google GenAI cho chương:", chapter.chapterName, error);
-            return { chapterName: chapter.chapterName, topics: [] };
         }
+
+        // Get YouTube video for the current chapter
+        const youtubeData = await GetYoutubeVideo(chapter?.chapterName);
+
+
+
+        return { ...aiContent, youtubeVideo: youtubeData };
     });
 
-    const CourseContent = await Promise.all(promises);
+    const CourseContentWithYouTube = await Promise.all(promises);
+
+    // save to db
+    const dbResp= await db.update(coursesTable).set({
+        courseContent: CourseContentWithYouTube
+    }).where(eq(coursesTable.cid,courseId))
 
     return NextResponse.json({
         courseName: courseTitle,
-        courseContent: CourseContent,
+        courseContent: CourseContentWithYouTube,
     });
 }
