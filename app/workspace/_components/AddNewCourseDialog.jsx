@@ -23,6 +23,7 @@ import {Button} from "@/components/ui/button";
 import {Loader2Icon, Sparkle} from "lucide-react";
 import axios from "axios";
 import {v4 as uuidv4} from "uuid";
+import {router} from "next/client";
 
 
 function AddNewCourseDialog({children}) {
@@ -50,13 +51,14 @@ function AddNewCourseDialog({children}) {
             const result=await axios.post("/api/generate-course-layout",{formData,courseId:courseId});
             console.log(result.data);
             setLoading(false);
-            router.push("/workspace/edit-course/"+result.data?.courseId);
+            await router.push("/workspace/edit-course/" + result.data?.courseId);
         } catch (e){
             setLoading(false);
             console.log(e);
         }
 
     }
+
 
     return (
         <div>
@@ -91,9 +93,9 @@ function AddNewCourseDialog({children}) {
                                             <SelectValue placeholder="Cấp độ" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="beginner">Nhập môn</SelectItem>
-                                            <SelectItem value="moderate">Trung cấp</SelectItem>
-                                            <SelectItem value="advanced">Nâng cao</SelectItem>
+                                            <SelectItem value="Nhập môn">Nhập môn</SelectItem>
+                                            <SelectItem value="Trung cấp">Trung cấp</SelectItem>
+                                            <SelectItem value="Nâng cao">Nâng cao</SelectItem>
                                         </SelectContent>
                                     </Select>
 
