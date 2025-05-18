@@ -22,7 +22,7 @@ function CourseList() {
     }
     return (
         <div className={"mt-10"}>
-        <h2 className={"font-bold text-3xl"}>Danh sách khóa học</h2>
+        <h2 className={"font-bold text-xl"}>Danh sách khóa học</h2>
 
             {courseList?.length === 0?<div className={"flex justify-center items-center p-7 flex-col border rounded-md mt-2 bg-secondary"}>
                 <Image src={"/certificate.jpg"} alt={"logo"} width={80 } height={80 } />
