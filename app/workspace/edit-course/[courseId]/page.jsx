@@ -5,7 +5,7 @@ import axios from "axios";
 import CourseInfo from "@/app/workspace/edit-course/_components/CourseInfo";
 import ChapterTopicList from "@/app/workspace/edit-course/_components/ChapterTopicList";
 
-function EditCourse() {
+function EditCourse({viewCourse=false}) {
     const { courseId } = useParams();
     console.log(courseId);
     const [loading, setLoading] = useState(false);
@@ -24,7 +24,7 @@ function EditCourse() {
     }
     return (
         <div>
-            <CourseInfo course={course} />
+            <CourseInfo course={course} viewCourse={viewCourse}/>
             <ChapterTopicList course={course}/>
         </div>
     );

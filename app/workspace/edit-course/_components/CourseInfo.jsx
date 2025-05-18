@@ -1,18 +1,17 @@
 "use client"
 import React, {useState} from 'react';
-import {Settings} from "lucide-react";
+import {LoaderCircle, PlayCircle, Settings, Sparkle} from "lucide-react";
 import Image from "next/image";
 import {Button} from "@/components/ui/button";
-import {Progress} from "@/components/ui/progress";
 import axios from "axios";
 import {useRouter} from "next/navigation";
 import {toast} from "sonner";
+import Link from "next/link";
 
-function CourseInfo({course}) {
+function CourseInfo({course , viewCourse}) {
     console.log(course);
     const courseLayout = course?.courseJson?.course;
     const [loading, setLoading] = useState(false);
-
     const router = useRouter();
 
     const GenerateCourseContent = async () => {
@@ -63,19 +62,13 @@ function CourseInfo({course}) {
                     </div>
                 </div>
 
-                <Button
-                    onClick={GenerateCourseContent}
-                    className={'max-w-sm'}
-                    disabled={loading} // Disable the button while loading
-                >
-                    <Settings className="mr-2"/>
+                {!viewCourse ?<Button onClick={GenerateCourseContent} className='max-w-sm'
+                         disabled={loading}>
+                    {loading ? <LoaderCircle className='animate-spin'/> : <Sparkle className="mr-2"/>}
                     Tạo nội dung
-                    {loading && <Progress className="ml-2 w-6 h-1"/>} {/* Show progress bar when loading */}
-                </Button>
+                </Button>:<Link href={'/course/'+course?.cid}> <Button> <PlayCircle/>Tiếp tục học</Button> </Link>}
 
-                {loading && (
-                    <p className="text-sm text-gray-500 mt-2">Đang tạo nội dung...</p>
-                )}
+
             </div>
             {course?.bannerImageUrl && (
                 <Image
