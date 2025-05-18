@@ -30,16 +30,6 @@ const SidebarOptions = [{
         path: "/workspace/explore"
     },
     {
-        title: "Trợ lý AI",
-        icon: PencilRulerIcon,
-        path: "/workspace/ai-tool"
-    },
-    {
-        title: "Nâng cấp",
-        icon: WalletCards,
-        path: "/workspace/billing"
-    },
-    {
         title: "Tài khoản",
         icon: UserCircle2Icon,
         path: "/workspace/profile"

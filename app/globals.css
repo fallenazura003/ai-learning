@@ -3,11 +3,89 @@
 
 @custom-variant dark (&:is(.dark *));
 
+body {
+  font-family: 'Inter', sans-serif;
+  scroll-behavior: smooth;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+
+/* Hide scrollbar for IE, Edge and Firefox */
+
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+}
+
+.font-header {
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.font-body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Gradient Animation for Background */
+@keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-gradient-flow {
+  background-size: 200% 200%;
+  animation: gradient-flow 20s ease infinite;
+}
+
+/* Scroll Animation Base Styles */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.scroll-animate.delay-100 { transition-delay: 0.1s; }
+.scroll-animate.delay-200 { transition-delay: 0.2s; }
+.scroll-animate.delay-300 { transition-delay: 0.3s; }
+
+.scroll-animate.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Image Placeholder styling when error occurs */
+.img-error-placeholder {
+  background-image: url('https://cdn.dribbble.com/userupload/10666001/file/original-a8398c0483a56562a27189e504d08f67.png?resize=400x0');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 200px; /* Adjust as needed */
+}
+.img-error-placeholder.gradient-bg {
+  background-image: linear-gradient(to right, #3b82f6, #8b5cf6), url('https://cdn.dribbble.com/userupload/10666001/file/original-a8398c0483a56562a27189e504d08f67.png?resize=400x0');
+  background-blend-mode: overlay;
+}
+
+/* Custom focus visible for better accessibility */
+*:focus-visible {
+  outline: 2px solid #facc15; /* yellow-400 */
+  outline-offset: 2px;
+}
+.flowbite-carousel-button:focus-visible {
+  outline: 2px solid #facc15 !important;
+  outline-offset: 2px !important;
+}
+button:focus-visible, a:focus-visible {
+  outline: 2px solid #facc15; /* yellow-400 */
+  outline-offset: 2px;
+}
+input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid #facc15; /* yellow-400 */
+  outline-offset: 1px;
+  border-color: #facc15 !important; /* Tailwind might override, so !important */
+  box-shadow: 0 0 0 2px #fde04766; /* yellow-400/40 */
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
