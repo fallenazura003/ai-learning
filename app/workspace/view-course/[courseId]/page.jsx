@@ -3,7 +3,6 @@ import React from 'react';
 import EditCourse from "@/app/workspace/edit-course/[courseId]/page";
 
 function ViewCourse() {
-    // const {courseId}=useParams();
 
     return (
         <div>

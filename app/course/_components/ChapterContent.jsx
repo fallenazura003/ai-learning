@@ -11,9 +11,6 @@ function ChapterContent({ courseInfo, activeChapterIndex, activeTopicIndex, onCh
 
     const activeChapter = courseContent[activeChapterIndex];
     const activeTopic = activeChapter?.topics?.[activeTopicIndex];
-    const markChapterCompleted=()=>{
-        onChapterComplete(activeChapterIndex);
-    }
 
     return (
         <div className="p-10">
@@ -23,7 +20,6 @@ function ChapterContent({ courseInfo, activeChapterIndex, activeTopicIndex, onCh
                         <h2 className="font-bold text-2xl mb-4 text-blue-800">
                             {activeChapter?.chapterName}
                         </h2>
-                        <Button onClick={markChapterCompleted}><CheckCircle/>Đánh dấu học xong</Button>
                     </div>
                     {activeTopic ? (
                         <div className="mt-2 p-6 border rounded-md bg-white shadow-md">
